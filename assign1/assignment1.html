@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+<TITLE> CPS393 Assignment1
+</TITLE>
+</HEAD>
+<BODY>
+<h1>CPS393 Assignment 1</h1>
+<ul>
+<li>
+You can view this file in a number of ways:
+  <ul>
+  <li> just look at this raw html (e.g, cat, more, vim, etc)
+  <li> copy this file into your public_html and view it with a GUI browser (e.g., Firefox, IE)
+  <li> use a text-based browser in a shell (e.g., lynx, sensible-browser, www-browser)
+  <li> from a GUI desktop, use a GUI browser to view the file directly
+  </ul>
+<li>
+Any changes/clarifications to this assignment will be given in file addendum.txt in 
+directory /usr/courses/cps393/dwoit/assignment/assign1/<br>
+</ul>
+<h2>Part a:</h2>
+Write a bash shell program named <strong>assign1a.sh</strong> that uses only environment variables, pipes and 
+bash commands that exist on the CS moons. You may use bash commands we studied in class, such as clear, echo, grep, etc.
+You may also use other moon bash commands if necessary, such as: hostname, last, id, hostnamectl.
+Do NOT use temporary files (use pipes instead).<br>
+The environment variable $LOGNAME will be useful.<br><br>
+When I ran the program (I am user dwoit) in early August, on thebe, my program cleared the screen,
+and then produced the output below, (the part including, and between, the
+lines of dashes.) <br>
+Note that your program should output plain text, with NO color changes. The red color below is 
+used only to identify those parts of your output that should NOT be hardcoded. Note that your program
+should also clear the screen before displaying its output.<br>
+<code>
+------------------------------------------------------------------------------- <br>
+This machine is <strong><font color="red">thebe</font></strong>. <br>
+<strong><font color="red">7</font></strong> users have logged into  <strong><font
+color="red">thebe</font></strong>
+since <strong><font color="red">Thu Aug 1</font></strong>; they are: <br>
+    <strong><font color="red">aabhari,amirul,dwoit,iwoungan,mes,neshel,s4ghaffa</font></strong>. <br>
+ <strong><font color="red">Thebe</font></strong> is at IP Address <strong><font
+ color="red">141.117.57.46</font></strong>
+ and is running <strong><font color="red">Operating System Ubuntu 16.04.6 LTS</font></strong>. <br>
+You are <strong><font color="red">dwoit</font></strong>, and you have logged in <strong><font
+color="red">2</font></strong>
+times since <strong><font color="red">Thu Aug 1</font></strong>. <br>
+------------------------------------------------------------------------------- <br>
+</code>
+IMPORTANT: <br>
+<ul>
+<li>Your program must use only variables, pipes, and bash shell commands. 
+<li>Your program must not use non-bash-command code, such as C, Python, Java, etc. 
+</ul>
+
+NON-HARDCODED PARTS:<br>
+Several items must be detected by your program, and NOT hardcoded. As noted above,
+these are shown above in red, but your program should NOT colorize output:
+<ul>
+<li>
+All occurrences of the machine name (thebe, Thebe). 
+<li>
+The number of users. i.e., the "7" above should vary according to when assign1a.sh is run.
+<li>
+The date. This must be the date /var/log/wtmp begins (this date is given in the final line
+  printed by the "last" command).
+<li>
+The list of users who have logged in since that date (as printed by the "last" command).
+<li>
+The IP address
+<li>
+The Operating System
+<li>
+The login name of the user running assign1a.sh (dwoit when professor ran hers, but NOT
+  HARDCODED). Your program must detect the name of the user. Thus, if dmason ran dwoit's
+  assign1a.sh, the program would print "You are dmason, ...", even though assign1a.sh is
+  dwoit's program, is in dwoit's filespace, and is owned by dwoit.
+<li>
+The number of times that user has logged in since the start date (this is the number
+  of lines for that user in last's output.) Note that "user" is the user running the 
+  program, not necessarily the program's owner.
+</ul>
+The parts of the output above shown in red font should NOT be hardcoded.
+The parts of the output above shown in normal (non-red) font should be hardcoded.
+For example, these strings MUST be hardcoded: <br>
+<pre>
+"-------------------------------------------------------------------------------"
+"This machine is "
+" users have logged into "
+"since" 
+"; they are:"
+etc.
+</pre>
+
+
+<h2>Part b:</h2>
+Write a shell program named <strong>assign1b.sh</strong> that uses a <strong>find</strong> command to display
+the following:<br>
+<ul>
+<li>
+files in the filesystem in and under directory /usr/courses/cps393/dwoit/courseNotes/
+<li>
+  whose name ends in .h but whose name does NOT contain the lower-case letter t
+<li>
+  and who are in group cps393
+<li>
+  and have been accessed less than 75 days ago
+</ul>
+
+Your program should display the files using <strong><code>ls -dils format</code></strong>. 
+This is a format similar to that of <strong><code>ls -l</code></strong>. 
+You can search for the string <stront><code>ls -dils format</code></strong> in the
+find man page to discover an appropriate option to use in your find command.
+<br>
+Your program should redirect stderr, so that any messages to stderr are not displayed.
+<br>
+Your program should use just a single find command to accomplish its task; do
+not use pipes, other linux commands, such as ls, etc.
+<p>
+When dwoit ran assign1b.sh on thebe on August 20, it produced the output below.<br>
+However, your output may differ because of your environment.<br>
+<pre>
+  6696735      4 -rw-r--r--   1 dwoit    cps393         98 Feb 28  2014 /usr/courses/cps393/dwoit/courseNotes/Programs/c/c1/myfuncs.h
+  4691378      0 -rw-r--r--   1 dwoit    cps393         29 Aug 20 11:37 /usr/courses/cps393/dwoit/courseNotes/Programs/c/c1/f.h
+  9742091      4 -rw-------   1 dwoit    cps393        841 Mar 27  2014 /usr/courses/cps393/dwoit/courseNotes/Programs/c/c3/kennelClub/KClub.h
+  2846471      4 -rw-r--r--   1 dwoit    cps393        154 Aug 20 11:37 /usr/courses/cps393/dwoit/courseNotes/Programs/c/c4/add.h
+  2846482      4 -rw-r--r--   1 dwoit    cps393        106 Aug 20 11:37 /usr/courses/cps393/dwoit/courseNotes/Programs/c/c4/hideADT/complex.h
+</pre>
+
+<p>
+CHEATING<br>
+There are hundreds of ways to code these shell programs. If your code is too similar to
+another student's code, you will both receive zero and be reported for cheating.
+<hr>
+SUBMIT<br>
+Submit your two programs using the cps393 submit program.
+<p>
+<strong>To Submit:</strong> <code>submit-cps393dwoit filename</code> <br>
+<strong>To Check what you've submitted: </strong> <code>check-submit-cps393dwoit</code><br>
+<strong>To Check your Marks: </strong> use D2L
+<p>
+If the submit programs are not in your path, you can use their absolute path name, as in:<br>
+<code>/usr/courses/bin/x86_64/submit-cps393dwoit filename</code>
+
+</BODY>
+</HTML>

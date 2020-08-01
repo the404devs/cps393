@@ -1,0 +1,33 @@
+Sept 17:
+  Note that the sample output given in assignment1.html shows some items in 
+  red (but your output should NOT be colorized). These items may change,
+  depending on who ran the program on what machine/server. i.e., the machine
+  name might change, the date might change, the user list might change, the
+  IP address might change, the OS might change, etc.
+Sept 20:
+  If you have the PATH to the submit programs in your path, this is an example
+  of you submitting your assignment ('>' is your prompt):
+    > submit-cps393dwoit assign1a.sh
+    > submit-cps393dwoit assign1b.sh
+  If the submit programs are not in your path, this is an example 
+  of you submitting your assignment:
+    > /usr/courses/bin/x86_64/submit-cps393dwoit assign1a.sh
+    > /usr/courses/bin/x86_64/submit-cps393dwoit assign1b.sh
+  Similarly for checking that you submitted it; one of the following:
+    > check-submit-cps393dwoit
+    > /usr/courses/bin/x86_64/check-submit-cps393dwoit
+Sept 20:
+  Note that for assign1a.sh, your program must produce output formatted
+  exactly as shown in the question, i.e., all punctuation, dashes, 
+  spaces etc., must be as in the example. Marks are deducted for incorrect 
+  output formatting.
+Sept 20:
+  For assign1a.sh, your program must NOT use temporary files; use pipes instead.
+  For assign1b.sh, your program must be A SINGLE find command, with options.
+Sept 20:
+  Marks are deducted if your programs are named incorrectly. Remember linux
+  is case-sensitive.
+Sept 21:
+  HINT: in linux, userids are at most 8 characters long. 
+Sept 26:
+  In Part B, "stdout" was changed to "stderr".

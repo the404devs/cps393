@@ -1,0 +1,653 @@
+START OF WEEK 1 (UNIX)
+
+<<<UNIX/LINUX>>>
+
+-an operating system (OS)  --so is Win
+
+-Widespread usage:
+   -68% of websites hosted on Linux/Unix servers [http://w3techs.com/technologies/overview/operating_system/all ]
+   -100% of world's top 500 supercomputers run Linux [https://www.zdnet.com/article/linux-totally-dominates-supercomputers/ ]
+   -Every person who uses the internet daily, probably uses Linux daily.  They may be unaware of it. [Linux.com]
+
+   -Linux/Unix use includes:
+      -Netflix, Instagram, Reddit, Tumblr, Twitter, Facebook
+      -Amazon, Google, Wikipedia, Samsung, Yahoo, Disney, Dreamworks, Pixar, Amazon, E*Trade, Reuters, 
+      -Microsoft [https://www.zdnet.com/article/linux-now-dominates-azure/]
+      -IBM, TiVO, DishNetwork, Garmin, US Department of Defence, Department of Energy, 
+      -National Security Agency [Wiki.answers]
+      -Google Android OS is modified Linux kernel
+      -Toyota, Travelocity, Cisco, Nokia, Sony, DejaNews, Match.com, Mercedes-Benz, Boeing, 
+      -HP, Compaq, etc.
+
+-Stable and Secure:
+  -see http://www.pcworld.com/article/204423/why_linux_beats_windows_for_servers.html 
+
+OS:     program(s) helping us communicate with computer's resources
+        e.g., memory (to "run" a pgm--OS loads into mem and starts it)
+              storage (double-click file icon--OS reads from disk &
+              displays with appropriate program)
+
+OS is layered:
+
+        utilities: commands available (e.g. to copy files)
+        ---------
+        shell:     a pgm that reads our commands, figures out what 
+        -----      we want done, and gets it done
+                
+                Win:  shell called command interpreter (command.com)
+                      get it from GUI by start->run command 
+                        prompts C:\>
+                        reads
+                        does
+                UNIX: several shells available: Korn Shell (ksh), Bourne
+                        Shell (sh), C Shell (csh), Bourne Again Shell (bash)
+                        prompts /home/dwoit>
+                        reads, does
+        kernel: heart of OS
+        ------
+                        controls access to hardware, files
+                        manages computer's memory
+                        maintains file system
+                        allocates resources among various activities 
+                        (e.g. CPU time)
+
+we communicate with kernel through a shell:
+
+        e.g.    /home/dwoit>    cat myfile
+                gets file myfile displayed on screen. 
+                we don't care *how* data accessed from disk, 
+                or *how* display works
+
+Our Linux servers (moons): metis, elara, europa, thebe
+Our Unix servers: jupiter, vogon (solaris OS) -- but non-student
+
+Logging in from a text interface:
+Moon login:     dwoit
+Enter password:                  #does not appear when typed
+/home/dwoit>                     #shell's prompt 
+
+For complete info on logging into all OS (Win, Linux), labs, and
+all DCS facilities see http://www.scs.ryerson.ca/user_guide.php
+
+Logging in from a X-windows GUI interface:
+-in lab, boot machine to linux 
+-enter userid and password into GUI when prompted
+-you will get a linux/unix GUI environment. 
+-to get a "shell" window, usually: 
+  -click on the shell or terminal icon on the panel (at the bottom of screen),
+  -or, find shell or terminal on some start-like menu,
+  -or, right-click mouse and find something like "shell" or "new terminal"
+The above is a bit vague because we have different installations of linux
+around, and things will vary depending on which one you get
+
+Logging in from a Windows machine:
+-use some communications program such as "ssh Secure Shell" or putty
+
+
+FROM THIS POINT ON, WE ASSUME THAT WE ARE WORKING IN A SHELL WINDOW
+(regardless of whether you got there from a GUI or text-based interface)
+
+to change your password:        
+                ...
+                /home/dwoit>
+                /home/dwoit>    passwd
+                enter current password:
+                enter new password:
+                enter new password:
+                /home/dwoit>
+
+to logout 
+                /home/dwoit>    exit
+in all windows
+ALSO logout of the GUI!!! Usually right-click and logout, or 
+select from bottom left icon on panel.
+
+
+
+<<<UNIX File System (how UNIX organizes and operates on files)>>>
+
+UNIX: commercial (like Win, iOS)
+Linux: open-source distribution
+
+case-sensitive: file MyFile vs. myfile 
+                        command PASSWD vs. passwd 
+
+file names:     max 255 characters (but system dependent)
+                no suffix needed  e.g., myfile and myfile.jav both  OK
+                file names combinations of letters, digits, . (dot),
+                _ (underscore), - (dash)
+                (some systems allow more, e.g., #, ~)
+
+file organization:
+        files and directories  (similar to Win)
+        file system like a tree  (like Win)
+        top of tree is / (called "root"), therefore main directory on 
+        UNIX called "root directory"
+
+
+                               /  
+                               |
+               ------------------------------------ 
+               |               |                  |
+            home              bin                usr
+             |                 |                  |
+       --------------      ---------            courses
+       |     |      |      |   |   |              |
+     dwoit achung r2lee   cp  rm  mv          ----------
+       |                                      |        |
+  ---------                                  bin     cps393
+  |        |                                  |          |
+cps209  cps393                              ------       --------
+  |        |                               |     |        |     |
+oop   ---------                          i386   sparc          dwoit
+      |        |                           |                     |
+ class.list  labs                       --------                 ----------
+               |                        |      |                   |     |
+            -------                 submit811 submit-cps393      labs
+            |     |                                                |    
+        lab1.txt lab2.txt                                   -------------
+                                                            |          |
+                                                         lab01      lab02          
+                                                            |
+                                                         -------------
+                                                         |           |
+                                                         lab01.html  vimTutorial.txt
+
+
+specify a filename by the path to it through the tree  (2 ways):  
+
+  absolute: path starts at root
+        e.g., /usr/courses/cps393/dwoit/labs/lab01/lab01.html
+        to display:  cat /usr/courses/cps393/dwoit/labs/lab01/lab01.html
+
+  relative:     path starts at current working directory
+        e.g., when login, put in /home/dwoit automatically 
+        (home directory), therefore:   cat cps393/labs/lab1.txt
+
+HMWK: For the file system (tree) given above, show how file
+vimTutorial.txt can be displayed, using an absolute path name.
+Show how file class.list can be displayed, using a relative path 
+name, assuming you are "in" directory /home/dwoit. What is the 
+absolute path name for directory usr? There are 2 "bin" directories 
+in the tree, give the absolute path for each. Give the relative 
+path for each, assuming you are in the root directory.
+
+<<<Useful UNIX Commands>>>
+
+ls      lists contents of current directory (like dir in Win)
+        if in home directory:
+        /home/dwoit>    ls
+                                cps209  cps393
+        /home/dwoit>    ls cps393/labs
+                                lab1.txt  lab2.txt
+
+cd      changes current directory (like cd in Win)
+        /home/dwoit>                    cd cps393
+        /home/dwoit/cps393>             ls
+                                                class.list   labs
+        /home/dwoit/cps393>             cd /home/dwoit/cps393/labs
+        /home/dwoit/cps393/labs>        ls
+                                                lab1.txt lab2.txt
+
+        note:    .   (this directory)     ..  (parent directory)
+
+        /home/dwoit/cps393>             cd ..
+        /home/dwoit>
+                . . .
+        /home/dwoit/cps393/labs>        cd       #home directory
+        /home/dwoit>
+        /home/dwoit>                    cd cps393/labs
+        /home/dwoit/cps393/labs>        cd ../..
+        /home/dwoit>
+
+pwd     (print working directory) shows you what directory you are in
+        (very useful when shell environment doesn't display working
+        dir in prompt)
+
+        if in home dir and prompt is set to $>
+        $>      pwd
+                /home/dwoit
+        $>      cd ..
+        $>      pwd
+                /home
+        
+
+cat     displays contents of file(s)  no paging
+        /home/dwoit> cat myfile          #file myfile displayed on screen
+        /home/dwoit> cat fn1 fn2 fn3     #3 files displayed consecutively
+tac     cat lines in reverse order (last line to first line)
+
+more    like cat but paginated
+        (spacebar gets next screenfull, enter gets next line, q quits
+less    better than more, if it works
+
+cp      copies one file (or directory) to another 
+        /home/dwoit/cps393>     cp class.list  new.class.list
+        /home/dwoit/cps393>     ls
+                                class.list  new.class.list   labs
+        /home/dwoit/cps393>     cp /usr/courses/cps393/labs/lab1.txt  .
+rm      deletes a file(s)  
+        /home/dwoit/cps393>     rm class.list new.class.list
+
+mkdir   creates a new directory
+        /home/dwoit/cps393>     mkdir admin
+        /home/dwoit/cps393>     ls
+                                admin labs lab1.txt
+
+rmdir   erases a directory (it must be empty)
+        /home/dwoit/cps393>     rmdir admin
+        
+mv      renames a file (or directory)   "moves" it in filesystem
+        /home/dwoit/cps393/labs>        mv lab1.txt  lab1
+        /home/dwoit/cps393/labs>        ls
+                                                lab1    lab2.txt
+wc      gives size (lines, words, chars) of files
+        useful in shell programs to help count things
+
+HMWK: give the sequence of commands that you would issue from your 
+home directory to do the following, in the order given: create 2 
+directories, lab1 and lab2, create a subdirectory of lab1 called 
+documentation; copy file /usr/courses/cps393/dwoit/labs/doc.txt
+into your directory called documentation;
+move your documentation/doc.txt into directory lab2 instead; 
+list the contents of directory documentation using an absolute path; 
+list contents of directory documentation again using a relative path; 
+make directory lab2 your current working directory; list contents of 
+file doc.txt; move back into your home directory; delete your file 
+doc.txt, then delete directory documentation, then, using an
+absolute path, delete lab1 and lab2.
+
+
+
+<<<Command Options>>>
+
+same general command -- different actions for different options
+limits number of different cmds need to memorize
+like switches in Win:   DIR /W  displays dir contents wide
+                        
+UNIX options follow a -  (dash)
+e.g., rm -r labs        ("recursively" erases dir labs and 
+                                all files and dirs in it)
+        ls -t   lists in order of last modification (newest first)
+        ls -R   recursively lists all subdirs and files
+        ls -p   directory names have a / added
+        /home/dwoit/cps393>     ls -p 
+                                admin/  class.list new.class.list  labs/
+        ls -l   long list
+        /home/dwoit/cps393/labs> ls -l
+                -rwxr--r-- 1  dwoit  nobody  3104  Oct 12 2010 lab2.txt
+                -rwxr--r-- 1  dwoit  nobody  1734  Nov 19 2009 lab1
+
+                
+        /home/dwoit/cps393/labs> ls -l -t
+                -rwxr--r-- 1  dwoit  nobody  1734  Nov 19 2009 lab1
+                -rwxr--r-- 1  dwoit  nobody  3104  Oct 12 2010 lab2.txt
+
+note: option order usually irrelevant. Same:
+                                ls -l -t
+                                ls -t -l
+                                ls -lt
+                                ls -tl
+
+
+<<<The On-line Unix/Linux Manuals>>>
+
+man     an on-line UNIX manual
+        /home/dwoit>    man ls          #the man pages for "ls" command 
+                                        #are "more"d on your screen 
+        /home/dwoit>    man -k zip      #keyword/apropos search for "zip"
+info    /home/dwoit>    info mv         #the info pages for "mv" command
+                                        #newer, more friendly, emacs-like
+                                        #info --vi-keys for vi-like
+
+
+many online, e.g., 
+   https://linux.die.net/man/
+   http://www.gnu.org/software/bash/manual/bashref.html
+   https://www.linux.org/docs/index.html   #when they are readable
+But tests will use man in bash shell
+
+
+HMWK: From your home directory, create 3 files, called tst1, tst2 
+and tst3, with vi (just enter one word or sentence in each file). 
+Use the man pages to determine the option for the "ls" command that 
+will get the following displayed on the screen:   tst1, tst2, tst2
+Use the man pages to determine the option of the "more" command that 
+will display a group of consecutive blank lines as a single blank 
+line on the screen.
+Use the man's appropos option to find all the browsers supported on linux
+
+
+<<<UNIX Security>>>
+
+each user: userid, password, home directory (can login 
+                many times simultaneously)
+each user's files and dirs from tree rooted in home dir
+        
+usually want your files and dirs to be able to be listed, 
+        displayed and modified only by you
+possible to give other users permissions to access your files in 
+        various ways
+
+<<Owners and Groups>>
+  each file and dir has an    owner and a  group associated with it
+  Owner:       -when you create a file, you become its owner (usually)
+  Group:       -users can join "groups" of other users with whom they
+                 can share files & dirs
+               -users can join many groups, but have one primary group
+               -users can "work" in different groups (change groups with
+                 newgrp newgroup)
+               -when a user creates a file, the file's group is made to
+                 be the group the user was in when the file was created
+                 (for you, typically your primary group)
+               -SYSADMIN IS ONLY PERSON WHO CAN CREATE GROUPS AND ADD
+                 YOU TO GROUPS. 
+
+<<File Permissions>>
+
+the permissions on a file dictate how owner, group members and other 
+users may operate on files 
+there are read, write, and execute permissions for each file, dir
+each of user (u), group members (g), and other users (o) have a distinct 
+set of read (r), write (w), and execute (x) permissions on a file/dir
+  
+r: file: can be looked at, copied
+    dir: can look at its contents, e.g., list file names in dir 
+         (but not file contents--need r on files and x on dir)
+w: file: can modify or delete it
+    dir: add/del files to/from dir (can modify files without w on dir)
+x: file: can execute it, if it is an "executable" (runnable) file
+            e.g., /usr/bin/cal, not /usr/courses/cps393/dwoit/labs/doc.txt
+    dir:  weaker than r. Can access a file or dir if know its 
+            name, but can't list contents of dir
+
+to allow anyone to execute file  /home/wchan/labs/myfile
+need x perms on myfile and need x perms on dirs down path to
+/home/wchan/labs so others can get at the file in the tree
+
+Can see perms on files with -l option of ls
+ 
+-rwxr-xr--  1  dwoit  nobody 1734 Aug 21 2018  lab1
+^\./\./\./  ^    ^      ^      ^     ^           ^
+| |  |  |   |    |      |      |     |           file name
+| |  |  |   |    |      |      |     last modification date
+| |  |  |   |    |      |      size in bytes
+| |  |  |   |    |      group name
+| |  |  |   |    owner
+| |  |  |   number of links to file
+| |  |  permissions for other users (only read here) 
+| |  permissions for members of group (only read and execute here)
+| permissions for owner of this file (read, write and execute here)
+file or directory? - = file,  d = directory
+
+for each of user, group, other, there are 3 possible permissions 
+ (read,write,execute)
+if read is set, "r" in first position, otherwise "-"
+if write is set, "w" in second position, otherwise "-"
+if execute is set, "x" in third position, otherwise "-"
+In example above, owner has read,write and execute perms on lab1,
+                        group has only read and execute perms on lab1
+                        all others have only read perms on lab1
+
+owner can change permissions on a file using chmod command:
+
+chmod (ugoa)(+-=)(rwx) file(dir)name(s)
+             = changes to exactly those given perms
+             +/- add, remove given perms
+
+e.g.,   suppose lab1 starts with perms
+                                -rwxr-xr-- 
+        chmod g+w lab1          -rwxrwxr--
+        chmod ug-x lab1         -rw-rw-r--
+        chmod a+r+w+x lab1      -rwxrwxrwx
+        chmod go=rx lab1        -rwxr-xr-x
+        chmod g=x,o+w lab1      -rwx--xrwx
+
+vvvvvvvvvvvvvvv  optional  vvvvvvvvvvvv
+|  Note:   - - -   (000)   0
+|          - - x   (001)   1
+|          - w -   (010)   2
+|          - w x   (011)   3
+|          r - -   (100)   4
+|          r - x   (101)   5
+|          r w -   (110)   6
+|          r w x   (111)   7
+|  
+|          chmod 160 lab1  sets only x for user, only rw for group 
+|          and no perms for others
+|  
+|  umask   sets up default permissions for all subsequently created files/dirs
+|          tells which perms to EXCLUDE
+|          e.g., umask 022  exclude write perms for group and other
+|                  don't exclude any perms from user
+|                  (excluding from what was set up as default 
+|                  by sysadmin--typically rw for user)
+|  
+^^^^^^^^^^^^^^^  optional  ^^^^^^^^^^^^
+
+HMWK: If you had a directory called dog that had read permissions 
+for everyone, and write permissions only for the owner, and execute 
+permissions for the group and others, what would the permissions 
+part of a "long listing" of the directory look like? Assuming you 
+were in the parent directory of dog, what is the command that would 
+remove all permissions for group and other? Then, what command would 
+give execute permissions to everyone, read permissions to the group, 
+and remove write permissions for the user? 
+You have default permissions for all files you create. If you haven't 
+done so yet, create 3 files, called tst1, tst2 and tst3, with vi 
+(just enter one word or sentence in each file). Then from your home 
+directory, use whatever commands you need to discover what the default 
+permissions are on all files you create.
+
+HMWK: 
+Create a file called tst1, and a directory called dog, in your 
+home directory (if you haven't done so already.) Copy tst1 to a 
+file called cat in directory dog. Move into dog. Remove write 
+and execute permissions for user (that's you!) on file cat. Now 
+try to erase cat. What happens? Why? How can you erase it? (give
+2 different ways, if possible)
+
+
+<<<Input/Output (I/O) Streams>>>
+
+UNIX commands, and pgms,  do I/O   e.g., 
+ls              *writes* results to screen (output); 
+passwd  *reads* your old and new password from the keyboard
+
+How? The shell associates *streams*  with the command.
+
+stream like a tunnel (output sent down, input received)
+
+The shell assigns 3 standard streams to any command:
+        stdin, stdout, stderr
+When command needs to read input, it looks in stdin, and 
+        reads whatever is there; 
+When command produces output, it sends it down stdout; 
+When command produces error message, it sends it down stderr.
+e.g., 
+
+      ----------------------        ------------------------
+                             passwd
+      ----------------------        ------------------------
+           stdin              |  |        stdout
+                              |  | stderr
+                                                                                
+The shell normally attaches other end of the streams to devices, 
+        such as the keyboard and monitor
+
+e.g., 
+
+      ----------------------        ------------------------
+keyboard                     passwd                       monitor
+      ----------------------        ------------------------
+           stdin              |  |        stdout
+                              |  | stderr
+                             monitor
+
+when passwd wants input (e.g., the current password) 
+        reads from stdin  ==  reading from keyboard
+        (passwd doesn't know or care that it is the keyboard,
+        just reads from stdin)
+Output similar
+when passwd encounters error, writes error msg on stderr 
+        (it ends up appearing on monitor, but passwd doesn't 
+        know or care)
+
+NOTE:  many commands ignore stdin if you give them a file to operate on.
+       e.g.,   cat lab1   #ignores stdin & reads directly from lab1 instead
+       e.g.,   wc  lab1   #similarly
+
+Try these with no arguments. What are stdin/stdout/stderr?:
+   wc                        
+   rev                       
+   cat                       
+
+
+<<<I/O Redirection>>>
+
+You can tell shell to redirect any std stream
+
+   /home/dwoit> ls > myfile       #redirects stdout
+
+shell attaches other end of stdout to file myfile  
+to see output of ls command, must view contents of myfile (vi, more, cat etc)
+
+      >  myfile               clobbers 
+      >> myfile               appends 
+
+   /home/dwoit> wc < myfile       #redirects stdin
+
+e.g.,  if  cat   cmd is given no argument, stdin is keyboard
+   /home/dwoit> cat  >outfile
+   /home/dwoit> my first line
+   /home/dwoit> my second line
+   /home/dwoit> ^d                 #end of file in UNIX  (^z in Win)
+
+   now file outfile contains:
+                        my first line
+                        my second line
+
+   /home/dwoit> cat  <infile  >outfile 
+   /home/dwoit>                   #nothing displayed
+ 
+   /home/dwoit> cat <infile
+                        #file infile displayed on screen
+
+to redirect stderr use    "2>"
+e.g., Suppose file labs does not exist. Then error msg on stderr
+            /home/dwoit>  ls labs 
+	    ls: cannot access labs: No such file or directory
+            /home/dwoit>  
+
+      If redirect stderr, error msgs written to file instead of screen:
+            /home/dwoit>  ls labs 2>errfile
+            /home/dwoit>  
+            /home/dwoit>  cat errfile
+	    ls: cannot access labs: No such file or directory
+
+Use redirect and /dev/null to throw output away 
+e.g.,    /home/dwoit> ls labs
+	 ls: cannot access labs: No such file or directory
+    errors printed on stderr. But this throws errors away
+         /home/dwoit> ls labs 2>/dev/null
+         /home/dwoit>
+
+Aside:  why 2> ??   
+        each stream given a number by shell
+        stdin 0, stdout 1, stderr 2 (ls >outfile is same as ls 1>outfile)
+
+to redirect both stdout and stderr at once
+&>outfile
+or 
+>outfile 2>&1
+
+To redirect stderr to stdout:
+2>&1
+
+
+<<<Devices>>>
+
+device: usually a piece of equipment for storing or 
+                communicating data,
+                e.g., printer, disk drive, terminal, modem
+
+on UNIX, we access devices as if they were (special) files, 
+ typically in dir /dev
+        e.g., a printer might be "file"  /dev/lp0
+        therefore       cp myfile /dev/lp0   
+                        prints myfile on line printer
+        e.g., writing a message directly to a terminal:
+	                echo "hi there" >/dev/pts/4
+
+ stdin/stdout/stderr are 
+      /dev/stdin, /dev/stdout, /dev/stderr
+      displaying file contents on stderr could be done:
+             cp blah /dev/stderr
+             or 
+	     echo blah blah >&2  #since 0,1,2=stdin/out/err
+
+
+
+when OS recognizes an operation on a special file, it calls 
+a pgm called a device driver to do the op (e.g., cause data 
+to be displayed on screen)
+
+character devices: transfers info char by char 
+                        (printer, keyboard, modem)
+block devices: transf. info in batches of chars, called blocks
+                        (disk, tape)
+terminals: special char. devices, since chars are interpreted:
+                tabs transformed into blanks
+                don't see *every* char you ever typed -- e.g., 
+                those just before a "backspace" char
+
+Null Device  (/dev/null)  the garbage can, black hole -- data 
+can go in but never come back out.
+        sending output to /dev/null = throwing it away
+        sometimes commands produce output we want to disregard
+
+	e.g., get error msgs if some files don't exist
+	/home/dwoit> wc file1 file3 file4 file5 file6
+        wc file1 file3 file4 file5 file6
+          7   8  34 file1
+        wc: file3: No such file or directory
+        wc: file4: No such file or directory
+         28  32 136 file5
+         21  24 102 file6
+         56  64 272 total
+	
+
+
+        Just the errors thrown away
+	/home/dwoit> wc file1 file3 file4 file5 file6 2>/dev/null  
+         7   8  34 file1
+        28  32 136 file5
+        21  24 102 file6
+        56  64 272 total
+
+
+        --more examples later 
+
+
+HMWK: Copy file tst1 to file tst.new, without using the cp command; 
+instead use output redirection.
+Make sure there is no file called xxx in your home dir. Using the 
+"cp" command, try to copy file xxx to file yyy. What happens? Is 
+there a way you can use output redirection so that "cp" will not 
+display any messages on the screen when you try to copy xxx?
+What commands could you use to create a file called dir.and.list 
+that contained the name of your current directory on the first 
+line, and a list of files in the current directory on subsequent 
+lines (you must create dir.and.list using UNIX commands, *not* 
+using an editor, such as vi.)
+Show 2 different ways you can use the "cat" command to create a
+file called big.tst, which contains file tst1, followed by tst2, 
+followed by tst3. 
+The nl command can be used to number lines given on stdin. Try it.
+Use the nl command to make a file named num1.txt, which is an exact
+copy of unix1.txt, except with line numbers. You must get nl to read
+unix1.txt by REDIRECTING stdin.
+
+END OF WEEK 1 (UNIX)
+
+

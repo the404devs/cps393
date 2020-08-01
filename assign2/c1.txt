@@ -1,0 +1,1644 @@
+If do these two, will get C highlighting for code in this file:
+:se syntax=c 
+:colorscheme koehler
+(peachpuff and default are also not bad)
+
+
+<<<How C Relates to other Languages>>>
+
+0. Widespread usage.  
+   -IEEE says C (followed by C++) is 2nd most popular programming language for mobile/embedded 
+    [ https://spectrum.ieee.org/static/interactive-the-top-programming-languages-2019]
+   Well-known-ish sites using C:
+     YouTube, Netflix, Tumblr, Google (memcached), Google App Engine, Google Android, 
+     Facebook, Twitter,
+     Instagram (redis, memcached, sourcecode in Python and C, ), Pinterest
+     Reditt, Wikipedia/Wikimedia, Amazon.com, Wikia, SourceForge, Digg,
+     Microsoft Azure, IBM Bluemix, etc.
+     [some wikipedia/Memcached Oct19]. 
+
+Numerous jobs require C/C++/Linux, e.g., a posting from Google:
+https://careers.google.com/jobs#!t=jo&jid=/youtube/software-engineer-youtube-1600-amphitheatre-pkwy-mountain-view-ca-385820148&
+
+
+1. Low Level vs High Level Languages
+
+
+high <--------------------------------------------->low
+      Python  Java  Ada            C         Assembler
+      R, Go,        Pascal                   Machine 
+      Scala         Fortran                  Language
+      Ruby          C++
+
+C is lowest level *portable* language
+
+
+2. OO vs Procedural Languages
+   OOP:        main building block is *objects/message-passes* 
+   Procedural: main bb is *variables/functions*
+               step-by-step process involving explicit storage
+               of data into variables to solve problem 
+
+<<<Structure of C Pgms--simplified>>>
+
+Pgm comments
+Includes
+Constant definitions                
+Function Prototypes
+Global variable definitions
+Functions (main and others)
+
+e.g.,
+/*Source:   sample1.c                      
+  Author:   Dr. .Woit                   
+  Purpose:  to show how printf works       
+  Input:    None                           
+  Output:   a line stating the lucky number
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#define LUCKY 723
+int main(void) {
+    printf("The lucky number is %d\n",LUCKY);
+    exit(0) ;  
+}
+
+HERE kind of Monday Oct 28
+
+Does?
+
+/* ... */  -comments between
+           -any text in a line after "//" is a comment
+
+DW shows includes (<> and "") A2
+   printf formatters and special characters
+
+#include <stdio.h>    
+     -needed for printf's definition
+     -preprocessor replaces with file contents *then* compiles
+
+#include <stdlib.h>    
+     -for exit's definition. Note return(0) is built-in. Diff is that
+     -exit quits whole program (even if called in a function), whereas 
+      return passes control back to caller
+
+<lib.h>  -looks in standard path, likely /usr/include/ (type stdio.h)
+
+"lib.h"  -looks in current dir
+
+#define LUCKY 723  -preprocessor replaces *all* LUCKY with
+                   -723 *before* compile
+                   -easy global changes, readability, fast execution
+
+int main(void)    -necessary. Execution begins here
+                  -body enclosed in {  }
+
+printf("The lucky number is %d\n",LUCKY);
+        -similar to Java:  System.out.printf("The lucky number is: %d%n", LUCKY);
+                       
+printf(format-string, arguments); 
+       ^               ^
+       |                to replace formats in format-string
+       |                
+       |                
+        regular chars (letters, digits)
+        control chars  \n -newline
+                       \t -tab
+                       \a -bell   
+        formats 
+                       %d  -decimal integer
+                       %c  -character
+                       %s  -string
+                       %f  -floating point
+                       %lf -double (long floating point)
+
+e.g., printf("my \a %s has %f fleas\n","dog",12.45);
+
+DW shows compiling, running
+
+To run pgm:  gcc filename.c
+             ./a.out
+or:          gcc -o filename filename.c
+             ./filename
+
+Note: if current dir in path, just need a.out or filename
+
+DW shows man pages
+
+Man Pages:
+ -Section 3 of the manual is for C functions. 
+ -e.g., man 3 printf   #shows C's printf function from stdio.h
+        man stdio.h    #shows all its types, macros, function prototypes 
+
+
+HMWK: What is the output of the following program?
+//source: a.c
+#include <stdio.h>
+int main(void) {
+  printf("*\n**\n");
+  printf("***\n****");
+  printf("\n***");
+  printf("**\n******\n");
+  return 0 ;
+}
+
+
+DW shows errors/warnings
+
+Fix the following program so that it does what the comments
+say it will. Note that errors can be BEFORE the line it
+complains about.
+/*Purpose: to calculate the area of a rectangle with given length and width 
+  Input: none
+  Output: length, width, and area of rectangle
+*/  
+#include <stdio.h>;
+#define LENGTH 36
+#define WIDTH 92
+int main(void);
+  printf("Length: %d, Width: %c, Area: %d\n",               
+           LENGTH,WIDTH,LENGTH*WIDTH);
+  return 0;
+}
+
+
+Most of following is similar to Java...
+
+
+DW shows types, sizeof operator, modifiers
+
+<<Variable Types>>
+
+C: declare before use
+   not strongly typed (can combine vars of diff types)
+   amount of storage for a type is machine-dependent (unlike Java where
+        all primitive types have a predefined size, e.g., int is
+	always 4 bytes).
+
+Some common ones:
+
+TYPE      USUAL SIZE          RANGE (signed)             FORMAT SPECIFIER
+char      1 byte              -128...127                      %c
+short int 2 bytes             -32,768...32,767                %hd
+int       4 bytes (or 2)      -2,147,483,648...2,147,483,647  %d
+long int  4 bytes (or 8)      -2,147,483,648...2,147,483,647  %ld
+float     4 bytes             3.4E-38 ... 3.4E+38             %f
+double    8 bytes             1.7E-308 ... 1.7E+308           %lf
+
+
+#include <stdio.h>
+//Program to print number of bytes of C types using sizeof operator
+// sizeof returns long unsigned int %lu
+//Source: typeSize.c
+int main (void) {
+  printf("char is %lu bytes\n", sizeof(char));
+  printf("int is %lu bytes\n", sizeof(int));
+  printf("long int is %lu bytes\n", sizeof(long int));
+  printf("short int is %lu bytes\n", sizeof(short int));
+  printf("float is %lu bytes\n", sizeof(float));
+  printf("double is %lu bytes\n", sizeof(double));
+  return 0;
+}
+
+
+MODIFIERS:  signed, unsigned, short, long
+short applies to integer only
+long  applies to integer or double
+signed, unsigned apply to char or integer only
+
+unsigned char  range 0...255
+unsigned short int 0...65,535
+
+As a variable, you can say:  double xx = 3.9876;
+As a constant, you say:      #define xx 3.9876 (taken as double unless suffix)
+#define xx 3.9876L is taken as long double
+L is double (if has decimal) or long int (if no decimal)
+U is unsigned. So #define x 44UL makes it unsigned long int
+
+
+DW shows scanf A2
+
+/*source: sample2.c*/
+/*program comments go here*/
+#include <stdio.h>
+int main(void) {
+  char initial1, initial2; /*first initial, last initial*/
+  int  age;                /*an age                     */
+  printf("Input first and last initial and your age (sep. space):");
+  scanf("%c %c %d", &initial1, &initial2, &age);
+  printf("\nHello %c%c. Your age is %d\n",initial1,initial2,age);
+  return 0;
+}
+
+Does?
+
+scanf: reads input from keyboard & stores in variables 
+       same formats as printf
+       REMEMBER THE AMPERSANDS!!
+
+
+<<Assignment in C>>  
+
+
+age=3;
+initial1='D';
+ 
+<<Arithmetic Operations>>
++ - * / %
+var=age*2+1;
+4%2 is 0
+4%3 is 1
+
+<<Increment/Decrement>> 
+
+i=i+1;      i++  or  ++i  -used then inc; inc then used
+i=i-1;      i--  or  --i  -"        "dec; dec "   "
+
+e.g.
+/*Purpose: to sum numbers from i to i+3 */
+/*Source: sample3.c*/
+#include <stdio.h>
+int main(void) {
+  int i;   /*starting number */
+  int sum; /*sum of i to i+3 */
+  printf("Enter starting number: ");
+  scanf("%d",&i);
+  sum=0;
+  sum=sum + i++;
+  sum=sum + i++;
+  sum=sum + i++;
+  sum=sum + i;
+  printf("Sum from %d to %d is: %d\n", i-3,i,sum);
+  return 0 ;
+}
+
+e.g.,
+
+i=1;  j=i++; printf("%d %d",i,j);  
+i=1; j=++i; printf("%d %d",i,j);   
+int a,b=0,c=0; 
+a=++b + c--; printf("%d %d %d",a,b,c);  
+
+
+DW shows type conversion (age/7.0)
+
+e.g.,
+/*Purpose: to convert human age to dog age*/
+/*Input: a human age                      */
+/*Output: corresponding dog age           */
+/*Source: sample4.c                       */
+#include <stdio.h>
+int main(void) {
+  int age;  /*the human age*/
+  /*read in the human age */
+  printf("Enter your age: ");
+  scanf("%d", &age);
+  /*compute and print dog age */
+  printf("You are just like a %f year old dog.\n",age/7.0);
+  return 0 ;
+}
+
+Note: type conversion   char <  int < float < double
+
+DW shows type casts
+
+<Type casts are explicit type conversions>  
+
+float f = 2.8;
+printf("%d", (int)f);
+
+int i = 4;
+double result;
+result= i*(double)8;  //if result needs to be double
+or 
+result= (double) (i*8);  //if result needs to be double
+
+Note: be careful where the (double) goes. e.g.,
+  dresult1= i/(double)8;  
+  dresult2= (double) (i/8);
+puts .5 in dresult1 but 0 in dresult2. why?
+
+
+HMWK: re-write the program above that sums the numbers from
+i to (i+3) using only 1 scanf and 2 printf calls, and no 
+assignment statements.
+
+DW shows function prototypes A2
+
+<<Functions>>  
+Slightly different than Java:
+1. *declare* a function before use in file (fn prototype)
+2. *define* a fn somewhere in pgm (maybe different file)
+
+e.g.,
+
+/*Purpose: to compute square of an integer*/
+/*Input: an integer to square             */
+/*Output: the square of the input integer */
+/*Source: sample5.c*/
+#include <stdio.h>
+int square(int a);    /*prototype*/
+int main(void) {
+  int num,sq;  /*number to square, and its square*/
+  printf("Enter number: ");
+  scanf("%d", &num); /*scanf("%d\n", &num);*/
+  sq = square(num);
+  printf("The square of %d is %d\n",num,sq);
+  return 0 ;
+}
+int square(int a) {
+  return (a*a);
+}
+
+NOTE: return ENDS function. Will be the LAST EXECUTED STATEMENT
+      It is as if "square(num)" is REPLACED by what function 
+      square returns.
+NOTE: if put square definition where prototype is, no need for
+      prototype
+
+DW shows math.h A2
+
+Many functions supplied with C
+to use--include the  .h  file  (definitions)
+
+#include <stdio.h>
+#include <math.h>
+/*Source: sample6.c
+  on some machines need to to compile with -lm flag, and that
+  flag must come at the end: 
+  gcc sample6.c -lm
+*/
+int main(void) {
+  double answer;
+  answer = sin(0.2);
+  printf("%lf\n",answer);
+  return 0 ;
+}
+
+     man math.h (for all functions, macros,  etc)
+     man sin    (for a specific function)
+
+
+DW shows type casts in function calls
+
+<Type Casts in Function Calls>
+
+e.g.,
+int i;
+double result;
+result = sqrt(i);
+The int i is converted to double before it is passed to sqrt
+(sqrt is in math.h and requires a double argument.)
+
+However, be careful!
+  printf("Sqrt of 1/2 is %lf\n",sqrt(1/2));
+  printf("Sqrt of 1/(double)2 is %lf\n",sqrt(1/(double)2));
+
+prints on moons:
+Sqrt of 1/2 is 0.000000
+Sqrt of 1/(double)2 is 0.707107
+Why? 
+
+DW shows implicit function declarations
+
+<Implicit Function Declarations>
+
+Ansi C says we should use function prototypes (or define the
+function before its use).  If we don't do this, gcc creates an 
+implicit declaration for the function which is often not what
+we expected. Why? Implicit declarations *always* use type 
+"int" for the function return type and for all argument types.
+
+e.g., 
+//source sample6a.c
+//Note: some gcc may require the -lm AFTER the filename, as in: 
+//gcc sample6a.c -lm
+#include <stdio.h>
+#include <math.h>
+int main(void) {
+  int a=2;
+  printf(" %lf\n",p(4,a));
+  return 0 ;
+}
+double p(double y, double z) {
+        return (pow(y,z)); // pow(x,y) returns x^y
+}
+
+On some linux/unix versions, it will compile, (with or without a
+warning message) but produce an unexpected result (not 16)
+
+on elara, get errors:
+    sample6a.c:11:8: error: conflicting types for ‘p’
+     double p(double y, double z) {
+            ^
+    sample6a.c:8:19: note: previous implicit declaration of ‘p’ was here
+       printf(" %lf\n",p(4,y));
+                       ^
+
+
+Functions may return nothing
+They are used for their "side-effects"
+
+/*Source: sample7.c*/
+#include <stdio.h>
+void out (char c);
+void bell(void);
+int main(void) {
+  out('A');
+  bell();
+  return 0 ;
+}
+void out(char c) {
+  printf("%c\n",c);
+}
+void bell(void) {
+  printf("\a");
+}
+
+
+<Exiting functions>
+
+1. return statements (or exit statement if main function)
+    Type of returned value should be same as type of function
+2. falling off the end   (e.g., functions out and bell above).
+
+In sample8.c variable "result" must be float because function
+"square" has type float.
+
+/*Source: sample8.c*/
+/*differs from sample5.c in that 
+  type of square is float  (and input is float)
+*/
+#include <stdio.h>
+float square(float n);
+int main(void) {
+  float num; /*number to square*/
+  float sqr; /*number squared  */
+  printf("Enter a number to square: ");
+  scanf("%f",&num);
+  sqr=square(num);
+  printf("%f squared is %f\n",num,sqr);
+  return 0 ;
+}
+float square(float n) {
+  float result;
+  result=n*n;
+  return(result); /*return(n*n) OK too */
+}
+
+DW shows pass by value
+
+Parameters passed by *value*
+a *copy* of value of parm is passed to fn
+  -fn can modify value and use it but does not affect the 
+   value outside of fn
+
+/*Source: sample9.c*/
+#include <stdio.h>
+void f(int i);
+int main(void) {
+  int i=0;
+  printf("%d",i);
+  f(i);
+  printf("%d",i);
+  return 0 ;
+}
+void f(int i) {
+  printf("%d",i);
+  i=1;
+  printf("%d",i);
+}
+
+Output?   
+
+HERE EOH2
+
+DW shows local and global scope 
+
+<<Scope of Variables>>
+if want global, must be explicit
+
+1. local
+  declared in a function
+  referenced within that function
+  exist only while function is executing 
+  1.a. static, as in:  static int i;
+       i maintains its value from one call of
+       function to another
+  
+2. global 
+  declared *outside* any function
+  can be referenced/modified by any function (below 
+      point of declaration in file)
+
+A local definition overrides a global
+Global and static initialized to 0 by compiler
+
+/*Source: sample10.c*/
+#include <stdio.h>
+void f(void);
+int i,k;
+int main(void) {
+  int j=0;
+  i=10;k=10;    /*global*/
+  f();
+  printf("%d %d\n",i,k);      
+  return 0 ;
+}         
+void f(void) {
+ int i=20;
+ k=5;
+// printf("%d",j);   /*error*/
+}  
+
+
+Adv: share data among fns
+Dis: use memory throughout entire pgm
+     may be used when unnecessary (fn less general)
+     side-effects (accidental modification by some fn)
+
+
+HMWK: A function called "pow" is available in math.h. 
+Read about it in man page and use it to write a program
+to do the following:
+/*Purpose: to compute the maximum sized unsigned integer
+             that could be stored in a given number of bits
+  Input: an integer, b, representing a number of bits
+  Output: a line stating the maximum unsigned decimal
+       integer that could be represented with b bits
+  Example: Input: 4
+           Output: Max unsigned decimal int that could be
+                   represented with 4 bits is 15
+*/
+Hint: (2 to the power 4) - 1  is 15
+
+Write a function called "me" which takes no arguments and 
+has no return value, but has the side-effect of printing
+out your name and address. Test it by calling it in a program.
+
+DW shows separate compilation A2
+
+<<Separate Files/Compilation>>
+
+Function code may be supplied and/or compiled in another file
+from main.
+
+/*Source:  prog.c */
+#include "myfuncs.h"
+int main(void) {
+  double d=19.54;
+  outchar('A');
+  outchar('B');
+  outchar(G);
+  outchar('\n');
+  printf("%lf\n",doubleDog(d));
+  return 0 ;
+}
+
+/*Source:  myfuncs.c */
+#include <stdio.h>
+#include "myfuncs.h"
+void outchar(char c) {
+  printf("%c %c",c,G);
+}
+double doubleDog (double d) {
+ return(d*2.0);
+}
+
+
+/*Source:  myfuncs.h  */
+#define G 'v'
+void outchar(char c);
+double doubleDog(double d); 
+
+Compile all source:  
+ gcc prog.c myfuncs.c
+Can compile 1 or more into object code first:
+ gcc -c myfuncs.c 
+ gcc -c prog.c 
+Then get executable by:
+ gcc prog.o myfuncs.o
+or
+ gcc prog.c myfuncs.o
+or
+ gcc prog.o myfuncs.c
+
+DO NOT DO:  gcc ... myfuncs.h   //WRONG!!
+
+---------------------------------------------------------------
+OPTIONAL - MAKEFILES
+
+<<Makefiles>>   
+
+There is good documentation online. e.g., If it is still there:
+http://www.gnu.org/software/make/manual/html_node/index.html
+(just need the overview and intro.) Note it uses: 
+  -"cc" where we use "gcc"
+  -"prerequisite" where we use "dependency" 
+  -"recipe" where we use "command"
+
+Using a Makefile:  make prog
+                   
+where file Makefile in this dir is:
+
+----------------------------------------
+prog: prog.o myfuncs.o
+        gcc -o prog prog.o myfuncs.o
+prog.o: prog.c myfuncs.h
+        gcc -c prog.c
+myfuncs.o: myfuncs.c myfuncs.h
+        gcc -c myfuncs.c
+----------------------------------------
+
+Or, could do just:     make myfuncs.o     if that's all you wanted.
+
+A makefile consists of a number of rules.
+Each rule is made up of a target, dependencies, and commands.
+   target is the part before the : 
+   dependencies are after the : 
+   command(s) are after a TAB under a target: dependencies line
+
+In Linux shell, you can do:
+   make x
+where x is any target in the makefile named Makefile.
+make looks at the dependencies for x.  If they are files and they 
+don't exist, or have been updated since the last time the target 
+was created, then the commands are executed. However, before the
+commands are executed, it checks for each dependency, d, as a 
+target. If it finds it, it implicitly does all "make d" first 
+before "make x"
+
+To use a file other than Makefile (e.g., mf):
+make -f mf prog  
+make -f mf 
+etc
+  
+If no *.o files existed, make prog would do all 3 lines in the Makefile:
+    gcc -c prog.c 
+    gcc -c myfuncs.c
+    gcc -o prog prog.o myfuncs.o
+
+If you type make with no argument, it does the first target 
+   in the makefile (prog in our case)
+
+If a target, t, has no dependencies, its command is always run
+when you do "make t"
+
+If make is not in your path, do "whereis make" to find out 
+where it is, and add that dir to your path. Or run it directly:
+/usr/bin/make prog.o
+
+Makefiles also have "default/implicit rules". 
+One such rule is that it knows that to make file x.o it must do 
+gcc -c x.c. So you can leave out rules with exact form:
+  prog.o: prog.c
+     	gcc -c prog.c
+
+Note that in our case we cannot omit this rule because it is not default:
+  prog.o: prog.c myfuncs.h 
+  	gcc -c prog.c  
+
+Note that myfuncs.c depends on myfuncs.h *not* for the prototype,
+but for the #define directive. However, prog.c depends on myfuncs.h
+for the function prototype (for doubleDog, since outchar could default).
+
+END OF OPTIONAL - MAKEFILES
+---------------------------------------------------------------
+
+DW shows getchar/putchar  A2
+
+<<<Reading and Writing Characters>>>
+
+getchar(); reads in one char
+putchar(); prints out one char
+
+/*Source: sample11.c*/
+#include <stdio.h>
+int main(void) {
+  char c;
+  c=getchar();  /*read in 1 char*/
+  printf("you entered a %c\n",c);
+  printf("In case you missed that, it was a: ");
+  putchar(c);
+  putchar('\n');
+  printf("char %c has ASCII code %d\n",c,c); //see below
+  return 0 ;
+
+}
+
+
+Chars are represented by their ASCII codes  int 0-255. e.g.:
+A is 65
+Z is 90
+n is 110
+
+c=getchar();
+if (c <= 'Z' && c >= 'A') printf("%c is upper case",c);
+
+c='B';
+printf("char %c has ASCII code %d",c,c);
+
+
+WARNING: getchar returns the actual ENTER-key character too!
+    Why? getchar() has buffered input 
+         as if reads do not happen until enter pressed
+         e.g., see sample11A.c
+
+
+<<<Program Control Statements>>>
+
+They are like Java (if, if-else, for, while, do-while, switch, etc)
+
+<<If Statement>>
+
+if (a < 7) printf("yes");
+
+if (a < 7) {
+   printf("yes ");
+   printf("it is\n");
+}
+
+if (a < 7 && b != 5) 
+   a=a+1;
+else {
+   a=a+b;
+   printf("%d",a);
+}
+
+Relational Operators: >   >=   <   <=   ==   !=
+  2 operands each
+  evaluate to int 0 when false; int 1 when true
+
+Logical Operators:
+  &&  and (short-circuit)
+  ||  or  (short-circuit)
+   !  not
+
+Note: C does not have a Boolean type
+       in C, any non-0 (int) value is "true"
+             0 is "false" 
+
+Note:  !5   is  0  (false)
+      !!5   is  1  (true)
+
+
+Can nest ifs
+
+if (i != 0)
+ if (i != 1)
+  if (i != 2)
+   if (i != 3)
+    if (i != 4)
+     if (i != 5)
+      if (i != 6)
+       if (i != 7)
+        if (i != 8)
+         if (i != 9)
+          printf("%d is not a digit\n",i);
+
+else binds with nearest "else-less" if above it
+
+if (i != 0)
+  if (i > 0) printf("\a");
+else printf("\a\a\a");
+
+The else binds to which if?
+
+
+No "elseif"  but can do  "else if"
+
+if (c >= '0' && c <= '9') printf("digit");
+else if (c >= 'a' && c <= 'z') printf("lower case letter");
+else if (c >= 'A' && c <= 'Z') printf("upper case letter");
+else printf("not alphanumeric");
+
+/*Source: fact.c
+  Purpose: function fact(long n) computes n!
+  Input argument: n an integer
+  Output: n! an integer
+  Note: a program using fact.c must include fact.h
+*/
+long fact(long n) 
+  {
+    if (n == 0)
+       return(1);
+    else  
+       return (n*fact(n-1));
+}
+
+/*Source: fact.h
+  Purpose: header file for fact.c
+*/
+long fact(long n);
+
+Ifs good for checking for *valid input*
+e.g., what should fact check about n?
+
+DW shows fprintf and checking exit's value in shell A2
+
+/*Source: dimcheck.c
+  Purpose: compute the floor space of a room
+  Input: int length, width (length & width of room)
+  Output: the square footage (integer) of room
+  Exit:   0 if good dimensions; 1 otherwise
+*/
+int GetDim(void);
+int main(void) {
+  int dim1,       /*one dimension of room */
+      dim2,       /*another dim of room */
+      ExitCode;   /*code to exit with 0=good*/
+
+  /*initialize ExitCode to good value*/
+  ExitCode=0;
+
+  /*read in dimensions*/
+  dim1 = GetDim();
+  dim2 = GetDim();
+
+  /*check for valid input*/
+  if ((dim1 <= 0) || (dim2 <= 0) ) { /*invalid dims*/
+     fprintf(stderr,"Input error. Expected 2 positive integers.\n");
+     ExitCode=1;
+  }
+  else
+     printf("Floor Space is %d\n",dim1*dim2);
+  exit(ExitCode);
+}
+
+int GetDim(void) {
+   int dim;  /*dimension */
+   int sret; //scanf return value
+   printf("Enter a dimension (pos. int.): ");
+   sret=scanf ("%d",&dim);
+   if (sret != 1) return(-1);
+   else return (dim);
+}
+
+Note:  echo $? in shell displays a pgms's exit status
+
+HMWK: 
+Here is a file called math2.c which contains functions
+for factorial and fibonacci
+/*Source: math2.c
+  Purpose: source code for factorial and fibonacci functions
+*/
+long fact(long n) {
+  if (n == 0) return(1);
+  else return (n*fact(n-1));
+}
+long fibonacci(long n) {
+  if (n == 0)      return (0);
+  else if (n == 1) return (1);
+  else             return (fibonacci(n-1) + fibonacci(n-2));
+}
+Write file math2.h, a header file for math2.c
+Write a program evaluate.c which prompts the user to
+enter a 0 or a 1. If 0 entered, calculate fact(n) where
+n is prompted for and read in. If 1 entered, calculate
+fibonacci(n), where n is prompted for and read in.
+Make sure your program does error checking on all input.
+Your program should exit with 0 if successful; with 1 if
+user didn't enter a "0 or 1"; and with 2 if the user 
+entered an invalid (including negative) value for "n".
+
+
+
+<<For loop>>
+
+for (i=0; i<=9; i++) {
+  printf("%d",i);
+  printf("\n");
+}
+Output?
+
+HERE Thr Oct 31 DW
+DW shows srand, rand, time (note: man 2 time)
+
+/* Source: rand.c
+  Purpose: generate MaxNum random integers
+  Input:   integer MaxNum (max number of rand nos to generate)
+  Output:  MaxNum random integers
+  Exit:    0 if successful; 1 if improper user input (not +ve int)
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+int main(void) {
+  int MaxNum,     /*number of random nos to generate     */
+      i,          /*index                                */
+      RandNo,     /*a random number                      */
+      ExitCode=0; /*value to exit program with           */
+
+  srand(time(NULL));   //seed with fairly unique number
+  //srand(12345);    //rand output always the same
+  printf("How many rand nos to generate? ");
+  if (((scanf("%d",&MaxNum)) != 1) || (MaxNum <=0)) ExitCode=1;
+  else
+    for (i=1; i <= MaxNum; i++) {
+      RandNo=rand();
+      printf("Random No %d is %d\n",i,RandNo);
+      //RandNo=(rand()%6); //gives numbers 0 to 5
+      //c = (char) (rand() % 128);
+    }
+  exit(ExitCode);
+}
+
+HERE EOH3
+
+for (i=5; i<20; i=i+5) printf("%d",i);
+for (i=10; i>0; i--)   printf("%d",i);
+for (i=1,j=5; i<10&&j>0; i++,j--)  printf("%d",i); 
+
+DW shows chars are integers
+
+char c;
+for (c='a'; c<='z'; c++) putchar(c);
+
+for (c=getchar(); c!='X'; c=getchar());
+printf("Thanks for finally inputting an X!! \n");
+
+for ( ; ;) ;   /*infinite loop*/
+
+for (c='A'; c<='Z';  ) {
+  putchar(c);
+  c=c+2;
+}
+
+
+HMWK: write a program that prints out the extended ASCII
+character set. Use a for loop from 0 to 255, printing the
+index as a char in each loop.
+
+
+<<While loop>>
+
+char c;
+c=getchar();
+while (c != 'X') 
+  c=getchar();
+printf("Thanks for finally inputting an X!! \n");
+
+==
+<<break and continue>>
+Inside a loop, 
+     break;     //stops loop and exits
+     continue;  //stops this iteration of loop starts
+                //the next loop iteration
+
+//source thanks.for.the.X.c
+char c;
+while ( (c=getchar()) != 'X');
+printf("Thanks for finally inputting an X!!");
+
+
+<<Switch Statement>>
+
+Use to choose between several alternatives
+ifs work--but bit messy if lots of choices
+can only switch on int or char
+
+switch(c) {
+  case 'a':
+    printf("a vowel");
+    break;
+  case 'e':
+    printf("a vowel");
+    break;
+  case 'i':
+    printf("a vowel");
+    break;
+  case 'o':
+    printf("a vowel");
+    break;
+  case 'u':
+    printf("a vowel");
+    break;
+  default:
+    printf("non-vowel");
+}
+
+==
+
+switch(c) { /*falls thru with no break*/
+  case 'a':
+  case 'e':
+  case 'i':
+  case 'o':
+  case 'u':
+    printf("vowel");  
+    break;
+  default:
+    printf("non-vowel");
+}
+
+switch(i) {
+  case 1: putchar('H');
+  case 2: putchar('E');
+  case 3: putchar('L');
+  case 4: putchar('L');
+  case 5: putchar('O');
+  default: putchar('\a');
+}
+If i is 1?  
+If i is 3?  
+
+
+
+HMWK: (1) Write a program which reads in a character, and prints
+whether the character is a vowel or non-vowel. It must work
+for any case, e.g., 'a' and 'A' are both vowels. You should
+not have separate cases for upper and lower case vowels. Do
+this by converting the character to lower case before the
+switch. Use function "tolower" which is in ctype.h (for usage
+see tolower man page.) For non-letter (a-z,A-Z) characters,
+print an appropriate error message. Remember exit codes.
+(2) Modify your program to read in any number of characters
+and report, after each read, whether it is a vowel. You should
+stop processing characters when a '%' is input. You should
+always remind the user that a '%' will stop the program.
+
+DW shows ctype.h functions
+DW shows isdigit returns 0 (false) or non-zero (true)
+DW shows char '9' is NOT same as int 9
+
+Other functions in ctype.h are toupper, isdigit, etc:
+
+/*Function: MakeInt()
+  Source:   MakeInt.c
+  Purpose: to convert a sequence of digits to its integer value
+  Input: a sequence of digit characters, e.g., 325
+  Output: the integer 325 (one hundred and twenty five)
+*/
+#include <stdio.h>
+#include <ctype.h>
+
+int MakeInt() {
+  int num=0,  /*final integer value  */
+      digit;  /*digit that is read in*/
+  digit=getchar();
+  for( ; isdigit(digit); digit=getchar()) {
+     num=num*10;
+     num=num+ (digit - '0');
+  }
+  return (num);
+}
+
+digit - '0' converts char 0,1, ... 9 to int 0,1, ... 9
+
+remember printf("%d %c", digit,digit); => 66 B
+ASCII decimal code for '0' is 48
+                       '1' is 49
+                       '9' is 57
+so if digit is '5' then digit-'0' evals to 53-48 = 5
+
+
+HMWK:
+(2) create a a program to display, at top of screen:
+------------------------------------------------------
+Welcome to the calculator program!
+Please choose the operation you desire by entering
+the appropriate number:
+
+1. addition
+2. subtraction
+3. multiplication
+4. division
+5. absolute value
+6. exit
+
+Your choice:
+------------------------------------------------------
+
+Note that you can clear screen using the C system command from stdlib.h, as in: 
+system("clear"); //(system does any linux command).
+The program will re-display this until user enters correct
+input. Then the program will prompt for necessary operands, 
+calculate and display the result. The program will repeat the
+above until the user enters choice 6 (exit program). Use a
+separate function for each operation. Exit main with appropriate
+code.
+
+(3) Design and implement a program to print a table of squares, cubes and quatrics
+for numbers 1 to N, where N is input by user. Use functions for
+each of square, cube and quatric, and reuse square where possible.
+The table would look like:
+Number Square Cube  Quatric
+------ ------ ----- -------
+1      1      1     1
+2      4      8     16
+3      9      27    81
+
+
+(4)
+This program will read in ints and print them
+out until 0 entered. Try entering 99a and see
+what happens? 
+/*TryScan.c*/
+#include <stdio.h>
+int main(void) {
+  int j,i=1;
+  char c;
+  while (i!=0) {
+    scanf("%d",&i);
+    printf("i is %d\n",i);
+    }
+exit(1);
+}
+Fix it. Could try:
+     adding line while ((c=getchar())!='\n');
+     after the scanf line, or
+     fflush(stdin);  which doesn't work on all systems, or
+     j=scanf... and then after
+     if (j!=1) {fprintf(stderr,"BAD"); exit(0);}
+
+(5)
+Fix fact(long n) so that it is robust (does something
+reasonable, like returns -1 when called with negative input)
+Then test:
+
+/*Source: testfact.c
+  Purpose: driver to test factorial function in fact.c
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include "math2.h"
+void test(int TestNumber, long result, long answer );
+int main(void) {
+  test(1,fact(0),1); /*boundary*/
+  test(2,fact(1),1); /*boundary*/
+  test(3,fact(2),2); /*boundary*/
+  test(4,fact(7),5040); /*interior*/
+  test(5,fact(-1),-1); /*error and boundary*/
+  test(6,fact(-3),-1); /*error*/
+  exit(0);
+}
+void test(int TestNo, long result, long answer) {
+  if (result != answer) printf("Test %d failed\n",TestNo);
+}
+
+
+(6)
+Write test drivers for the square function and for the
+fibonacci function. What input would you use to test the
+program for computing floor space we did previously?
+
+DW shows static in C
+
+<<<Static Functions and Variables>>> 
+
+Remember: a static variable is known only to the function in which it is
+declared, and retains its value from one call of the function to another.
+
+A static function is known only in the file in which it is defined/declared
+(like being private to that file.)
+
+e.g.,
+Function q is only available to code in file f.c. It is not available to main
+or any other code. If you try to use q() from main, it gives "undefined" error
+
+//Source f.h
+int f (int x);
+
+//Source f.c
+static int q(int x) {
+        return(x*x);
+}
+
+int f (int x) {
+        return (q(x));
+}
+
+//Source: m.c
+#include <stdio.h>
+#include "f.h"
+
+int main(void) {
+int y=f(7);
+printf("%d\n",y);
+//y=q(4);
+return(0);
+}
+
+---------------------
+
+Static variables within functions:
+
+On a moon, the following program prints something like:
+1 2 3 4 5 
+1 1 1 1 1 
+
+//Source: accum.c
+int fs(int x) {
+  static int count=0;
+  count=count+x;
+  return (count);
+}
+int fn(int x) {
+  int count=0; 
+  count=count+x;
+  return (count);
+}
+int main(void) {
+  int i;
+  for (i=0;i<5;i++) printf("%d ",fs(1));
+  putchar('\n');
+  for (i=0;i<5;i++) printf("%d ",fn(1));
+  putchar('\n');
+}
+
+A function,f, that is not declared "static" will be exportable. 
+i.e., you can put f's definition in f.c and declaration in f.h 
+Then if you include f.h in another file, M.c, and compile both M.c and f.c,
+f will be available to the code in M.c
+If f was static, then it would not be available to code in M.c
+
+DW shows Arrays and Strings A2
+
+<<<Arrays and Strings>>>
+
+Some differences from Java.
+
+<<1-Dimensional>>
+
+int A[20];  //gives A[0] A[1] ... A[19]
+
+Assign:     A[14]=1005;
+Reference:  printf("%d", A[14]);
+
+Initialize at declaration: 
+  int A[5] = {1,2,7,15,3};
+or later:
+  int A[5];
+  for (i=0; i<5; i++) scanf("%d",&A[i]);
+
+No bounds checking: printf("%d",A[92]); compiles OK and runs
+See outOfBounds.c
+
+char a[10], b[10];
+for (i=0; i<10; i++) b[i]=i;
+Incorrect:  a = b;  /*compiler error:incompatible types*/
+Correct:    for (i=0; i<10; i++) a[i]=b[i];
+
+/*Source: FindLtr.c
+  Purpose: output occurrences of A,B,...Z found in input
+  Input: chars from stdin
+  Output: each upper case letter and its occurrences
+*/
+#include <stdio.h>
+#include <ctype.h>
+int main(void) {
+  int i,          /*index  */
+      c,          /*char from stdin*/
+      letter[26]; /*array for upper case letters*/
+  for (i=0; i<26; i++) letter[i]=0;    /*initialize array*/
+  while((c=getc(stdin)) != EOF)          /*^d on Linux */
+    if (isupper(c)) ++letter[c - 'A']; /*increment right slot*/
+  for (i=0; i<26; ++i) {               /*print results*/
+    if (i%6 == 0) printf("\n");        /*new line every 6 chrs*/
+    printf("%5c: %4d", 'A'+i, letter[i]);
+  }
+  printf("\n\n");
+  exit(0);
+}
+
+Try running above executable with some input redirected from an input file
+e.g., a.out <some_file
+
+EOF   ^d Linux,  ^z Windows
+'A' is 65, 'B' is 66, etc. Therefore,
+'A' - 'A' = 0
+'B' - 'A' = 1  etc
+
+HERE EOH1
+
+HERE Nov 4 2019 DW
+
+DW shows strings 
+
+<<Strings>>
+
+Similar to Java except 
+
+In C, no string type 
+      string: null-terminated char array
+              null is '\0'  (= byte 00000000)
+
+declare array 1 larger than string length (for \0)
+
+compiler automatically null-terminates string constants
+   "Hello There"   //takes 12 bytes of storage
+
+DW shows gets
+
+gets()  in stdio.h    
+        reads chars up to and including carriage return (or EOF)
+	discards the '\n' (or EOF) and null-terminates string
+
+gets OK for cps393, but use fgets in real world
+        depreciated. no gets prototype in <stdio.h> but implementation
+	still in gcc so still works--for now.
+
+/*Source: str1.c
+*/
+#include <stdio.h>
+int main(void) {
+  int i;        /*index*/
+  char str[40]; /*string max 39 chars*/
+
+  printf("Enter a string (max 39 chars):");
+  gets(str);
+  for (i=0; str[i]; i++)  /*loops until str[i] is '\0' */
+       printf("%c",str[i]);
+  /*
+    ==printf("%s",str);
+  */
+  putchar('\n');
+  exit(0);
+}
+
+
+
+Different compilers have different behaviors regarding gets
+
+Would be nice if didn't READ more than 39 chars into memory.
+Also,
+Would be nice if terminated printing at \0 OR reaching 39 chars
+so not printing junk from memory.
+Can do these using: fgets and fputs 
+
+DW shows fgets
+
+fgets(str, length, fp);
+
+ reads chars from "file" pointed to by fp (fp could be stdin) 
+  and stores them in array str, until
+   1. '\n' read (and transferred to str)
+   2. (length-1) chars have been read, or
+   3. EOF
+ terminates str with a '\0'
+ returns ptr to str if successful
+         NULL ptr otws
+
+e.g., fgets(str,40,stdin); would stop memory overwrite
+However, it also puts \n in str (if str not full) If you
+don't want the \n, you have to remove it yourself (copy
+a '\0' over the '\n').
+
+/*Source:tryfgets.c*/
+#include <stdio.h>
+int main(void) {
+  int i;        /*index*/
+  char str[40]; /*string max 39 chars*/
+
+  printf("Enter a string (max 38 chars):"); //leave slots for newline and null
+  fgets(str,40,stdin);
+  fputs(str,stdout);
+  exit(0);
+}
+Note: Prompt for string of 38 chars to leave room for (\n and \0)
+      enter <=38 chars, it includes the newline in str
+      enter >38 chars, there is no \n, but 40th slot (str[39]) gets \0
+
+
+In string.h:  strcpy, strcat, strcmp, strlen etc.
+
+char a[40], b[40];
+strcpy(b,"Hello");
+strcpy(a,b);
+
+printf("%s %s",a,b);    
+			
+
+strcpy(a,"Hi");
+strcat(a," There");
+printf("%s",a);      //prints Hi There
+			
+
+strcmp(x,y) returns:
+    0 if same
+   <0 if x < y in dictionary order (str length irrel)
+   >0 if x > y
+
+strcpy(b, "Hello");
+strcpy(a, "Hellp");
+printf("b has length %d",strlen(b));
+printf("%d", strcmp(a,b));  //prints 1
+printf("%d", strcmp("Hello",b));  //prints 0
+
+null string contains only '\0'
+strcpy(a,""); /*or*/ a[0]='\0';
+
+int i;
+i=atoi("127");   //in stdlib.h -converts digit string to integer
+printf("%d",i);  // prints integer 127 
+
+Other useful string functions are: sprintf, sscanf
+
+int sprintf (char *out_string, const char *format_string, ... );
+
+-const is a qualifier indicating the data cannot be modified
+-works like printf but prints into string out_string instead of stdout
+char S[20]; 
+double x=94.12345;
+ printf(   "%.2lf", x);  -->      "94.12" printed on stdout
+sprintf(S, "%.2lf", x);  --> S is "94.12" the '\0' added automatically
+
+int sscanf(char *str, const char *format_string, ...);
+
+does a scanf from a string instead of stdin
+Nice, because can use gets to read whole line including \n
+(no worry about scanf "stuck" on the \n)
+remember: gets discards the read-in '\n' and null-terminates the string
+
+char S[40];
+int x,y;
+gets(S);
+sscanf(S, "%d %d", &x,&y);
+
+
+
+<<Multi-dimensional Arrays>>
+
+int X[3][4];  /*3 rows (0-2), 4 columns (0-3)*/
+
+int X[3][4][2]; /*array of 2-dim arrays
+                  visualize as a cube*/
+
+Initialization:
+
+int A[3] = {1,4,7};
+char B[3] = {'A','B','C'}; /*no null term*/
+char C[4] = "ABC"; /*null term added automatically
+                     so need [4] */
+
+int D[2][3] = {
+               2,4,7,
+               6,9,5
+              }; /*D[0][0] is 2; D[0][1] is 4, etc */
+
+e.g.,
+
+/*Source: 3dimary.c*/
+#include <stdio.h>
+int main(void){
+  int A[2][3][2]= {1,2,3,4,5,6,7,8,9,10,11,12};
+  int i,j,k;
+  for (i=0; i<2; i++)
+    for (j=0; j<3; j++)
+      for (k=0; k<2; k++)
+        printf("A[%d][%d][%d]=%d\n",i,j,k,A[i][j][k]);
+  exit(0);
+}
+
+
+Automatic (local) arrays not initialized by compiler
+Global & Static are initialized to 0 by compiler (like
+   all global & static variables)
+
+
+Unsized Arrays:
+
+(compiler counts # of constants to find size needed)
+
+int A[] = {1,4,2,6};  /*size 4*/
+char UserMsg[] = "Enter a number: ";
+
+int b[][2] = { 1,4,
+               7,9,
+               3,5
+             };
+Need to include one dimension-count to help compiler
+
+Why unsized?
+  easy modification, especially if use sentinel when
+  looping (no change of declaration size and no
+  change of loop index max)
+
+DW shows Arrays of Strings
+
+Arrays of Strings:
+
+char colors[5][9];
+  /*5 strings, each string max 9 chars incl null*/
+
+char colors[][7] = {
+                     "blue",
+                     "red",
+                     "pink",
+                     "purple" };
+printf("%s",colors[2]);   //prints pink
+printf("%c",colors[2][3]); //prints k
+
+char names[3][40];
+gets(names[0]);
+gets(names[1]);
+gets(names[2]); /*fills array*/
+for (i=0;<3; i++) printf("%s\n",names[i]);
+
+HERE EOH2
+
+/*Source: printword.c
+  Purpose: print the english word equivalent of a digit
+  Input:   a digit, e.g., 9
+  Output:  the word equivalent, e.g., nine
+  Note:    should exit with bad code if invalid input
+*/
+#include <stdio.h>    
+int main(void) {
+  /*set up array of english words for digits*/
+  char digits [10][6]= {
+        "zero", "one", "two", "three", "four", "five",
+        "six", "seven", "eight", "nine" };
+  char num;   /*digit to read in*/
+
+  printf("Enter a digit: ");
+  num = getchar();
+  num = num - '0';
+  if (num >= 0 && num < 10)
+       printf("\n%s\n", digits[num]);
+  else printf("\nThat wasn't a digit\n");
+  return 0;
+}
+
+ASCII for '0' is 48, for '1' is 49 etc
+so if enter 2:  num = '2' - '0' = 50 - 48 = 2
+                so digit[2] is printed
+
+
+Passing arrays to Functions:
+
+
+/*Source: trypas.c*/
+#include <stdio.h>
+#include <stdlib.h>
+void f1(int num[],int loc), f2(int num[],int loc);
+int main(void) {
+  int i,loc=0;
+  int count[] = {0,0,0,0,0};
+  f1(count,loc);
+  f2(count,loc);
+  printf("count=");
+  for (i=0; i<5; i++) printf("%d ", count[i]);
+  printf("\nloc=%d\n",loc);
+  exit(0);
+}
+void f1(int num[],int loc) {
+  num[0] = 99;
+  loc=99;
+}
+void f2(int num[],int loc) {
+  num[1] = 22;
+  loc=22;
+}
+
+
+
+It prints:   
+
+Why? loc makes sense, but why was count changed?
+(Remember, normally call-by-value, e.g., a COPY
+      of the value is passed down, so what's happening?)
+*Address* of arrays are passed down (only for arrays, not regular variables)
+Therefore, it's like arrays passed call by value (but they're not, really)
+Will be more clear after pointers
+
+/*Source:  encode.c
+  Purpose: encode a string by alternately taking chars
+           off each end (starting with left side) and
+          stopping when middle of string reached
+          e.g., "Hi there" would become "Heir eth"
+*/
+#include <stdio.h>
+#include <string.h>
+int main(void) {
+  char str[80];
+  int i,j;
+  printf("Enter string to be encoded: ");
+  gets(str);
+  /*encode it*/
+  i=0;
+  j=strlen(str)-1;
+  while (i <=j) {
+    if (i<j) printf("%c%c",str[i],str[j]);
+    else printf("%c", str[i]); /*i==j*/ 
+    i++; j--;
+  }
+  printf("\n");
+  return 0;
+}
+
+Try tracing with "My Dogs":
+
+i   j   output
+-   -   ------
+0   6   Ms
+1   5   yg
+2   4   _o
+3   3   D
+
+          Giving:  Msyg oD
+
+HMWK:
+1. Consider all the numbers from 1 to 4321 written out. How many times would the
+digit '5' appear in total? Write a C program to figure this out.
+

@@ -1,0 +1,66 @@
+
+CPS393 Lab05 
+
+   Write a shell program named lab05 that takes 2 or more command line arguments.
+   Arguments are expected to be readable files. If there are no "issues", then 
+   lab05 prints, on stdout, the names of the files with the fewest/most lines, 
+   and their respective linecounts, as follows:
+       file xx has fewest lines (f)
+       file yy has most lines (m)
+   where 
+     out of all the readable files on the command line,
+     xx has the fewest lines (f lines), and yy has the most lines (m lines).
+
+   Possible "issues":
+   -----------------
+
+   -less than 2 command line arguments are given. In this case, print the 
+    following on standard error, where "lab05" is the name of the program, 
+    but is NOT hardcoded:
+    lab05: 2 or more command line arguments are required
+
+   -no valid files are given on the command line arguments (e.g., files do not
+    exist, or are not readable, or arguments are directories, not files, etc.)
+    In this case, print the following on standard error, where "lab05" is the name 
+    of the program, but is NOT hardcoded:
+    lab05: no valid files
+
+    -only one valid file is given on the command line (e.g., all-but one of the files 
+    specified were invalid files, or directories, etc.)
+     In this case, print the 2 lines as in "no issues" above, but the same file is
+     listed for both xx and yy.
+
+    Exit codes:
+    1 if something was printed on standard error
+    0 otherwise
+
+   Example of running lab05 (where ">" is my prompt):
+   >ls -l
+   total 4
+   -rwxr-x--- 1 dwoit cps393 951 Aug  5 15:12 lab05*
+   -rw-rw---- 1 dwoit dwoit   64 Aug  5 15:35 www
+   -rw-rw---- 1 dwoit dwoit    0 Aug  5 15:14 yyy
+   -rw-rw---- 1 dwoit dwoit    6 Aug  5 15:14 zzz
+   >
+   >wc -l *
+   44 lab05
+   11 www
+    0 yyy
+    2 zzz
+   57 total
+   >
+   >lab05
+   ./lab05: 2 or more command line arguments are required
+   >echo $?
+   1
+   >
+   >lab05 abcd efgh
+   ./lab05: no valid files
+   >
+   >lab05 www yyy zzz abcd
+   file yyy has fewest lines (0)
+   file www has most lines (11)
+   >
+   >echo $?
+   0
+   >

@@ -1,0 +1,95 @@
+CPS393 Lab 04 
+
+
+1. Write a shell program named lab04Q1
+
+   The shell program expects 1,2 or 3 command line arguments.
+
+  -If the wrong number of command line arguments are given (0,4,5...): 
+   Your program prints an ERROR MESSAGE on STANDARD ERROR, as follows, 
+   where the "lab04Q1" is not hardcoded, but instead printed using $0 
+       lab04Q1: wrong number of command line arguments
+
+  -If the correct number of command line arguments are given: 
+   Your program uses ONE echo statement to print the following on 
+   standard output:
+       the X arguments are A1 A2 A3 
+   where "X" is the actual number of arguments the user sent (will be 1,2 or 3), 
+   and   "Ai" is the ith command line argument
+   Note   A2 and/or A3 may be null, depending on the value of X.
+
+
+  -Exit codes:
+   If the correct number of command line arguments were given: 
+     Your program exits with exit code 0 
+   If the wrong   number of command line arguments were given: 
+     Your program exits with exit code 1 
+
+   Remember, you can check the exit code of your shell program by typing
+   the following immediately after running your program:
+   echo $?
+
+
+
+2. Write a shell program named lab04Q2 that expects 2 command line arguments.
+
+   If the wrong number of command line arguments are given (0,1,3,4...): 
+   Your program prints an ERROR MESSAGE on STANDARD ERROR, as follows, where
+   the "lab04Q2" is not hardcoded, but instead printed using $0.
+       lab04Q2: exactly 2 arguments expected
+
+   If 2 command line arguments are given: 
+   Your program checks the first argument.
+   If this argument is not exactly the string "file" or "dir", then your program prints 
+   an ERROR MESSAGE on STANDARD ERROR, as follows:
+       lab04Q2: first argument must be string "file" or "dir"
+
+   If 2 command line arguments are given, and argument 1 was OK (see above):
+   Your program checks the second argument. 
+   It checks whether or not the second argument is an entry that exists and is readable.
+   If that's not the case, then print an ERROR MESSAGE on STANDARD ERROR, as follows, 
+   where "XX" is replaced by the second command line argument:
+       lab04Q2: XX is not a readable entry
+
+   If all the command line arguments are OK (see above) then your program prints either
+   YES or NO on standard output, as follows:
+     YES if $2 is an entry of type $1
+     NO  if $2 is NOT an entry of type $1
+
+   For example, suppose the following is an "ls -l" of the current directory:
+   drwxr-xr-x 2 dwoit fac 4096 Feb  7 13:43 d1
+   drwxr-xr-x 2 dwoit fac 4096 Feb  7 13:43 d2
+   d--xr-xr-x 2 dwoit fac 4096 Feb  7 13:45 d3
+   -rw-r-xr-x 1 dwoit fac    0 Feb  7 13:43 dog
+   ----r-xr-x 1 dwoit fac    0 Feb  7 13:45 dogN
+   -rwxr-xr-x 1 dwoit fac  456 Feb  7 14:02 lab04Q2
+
+   Then the following print YES
+     lab04Q2 file dog
+     lab04Q2 dir d1
+     lab04Q2 dir d2
+   The following print NO 
+     lab04Q2 dir dog
+     lab04Q2 file d2
+   The "not a readable entry" error message is printed for each of these:
+     lab04Q2 dir d3
+     lab04Q2 file dogN
+     lab04Q2 file xx
+   The "first argument" error message is printed for each of these:
+     lab04Q2 xx dog
+     lab04Q2 foil xxx
+
+
+   EXIT codes:
+   When your program prints an error message on standard error, it should exit immediately
+   after printing the message. The exit code should be as follows:
+   3 if the wrong number of command line arguments were given
+   1 if it there was a problem with $1 (and 2 command line args were given).
+   2 if $1 was OK, but there was a problem with $2 (and 2 command line args were given.)
+
+   When your program prints YES or NO, its exit code should be 0
+   Remember, you can check the exit code of your shell program by typing
+   echo $?
+   right after running your shell program.
+
+

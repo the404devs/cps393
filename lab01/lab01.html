@@ -1,0 +1,79 @@
+<pre>
+Lab01 -- Logging in and Using the Vim Editor
+
+------------------------------------------------
+Part 1: Get a Linux shell window into a CS moon
+------------------------------------------------
+
+1. Reboot a lab machine, if necessary
+
+2. Login to a Windows session with your usual CS userid/password
+   If you forgot your password, you have to ask a sysadmin to reset
+   it for you (professors and TAs are not authorized to reset passwords)
+   Sysadmins are found in ENG 244, 246, 248 
+
+3. Run Putty (from windows start button in lower-left-corner of screen).
+   In the "Host Name" box, type: moon.scs.ryerson.ca
+   If necessary: 
+      In "Port" box, type: 22
+      For "Connection Type" select: SSH
+   Then click "open"
+
+4. Login to your putty session with your CS userid/password
+   You now have a Linux shell window into a CS moon.
+   
+5. Note: The icon in the top-left corner of the putty window will display  
+   Putty's menu. You can open another shell window by selecting 
+   "Duplicate Session" or "New Session". 
+   You can have many shell windows open at once.
+
+
+-------------------------------
+Part 2: Learn how to use the Vim editor
+------------------------------------
+
+1.  From an CS linux shell window, go into your home directory by typing:
+      cd
+
+2.  Copy the file vimTutorial.txt from the labs directory into your home
+    directory by typing:
+      cp /usr/courses/cps393/Labs/lab01/vimTutorial.txt lab01Tutorial.txt
+
+3.  Verify the copy worked. Type:
+      ls
+  You should now see lab01Tutorial.txt listed. If you don't, try the above commands
+  again, remembering to pay special attention to the SPACES, DOTS, and CAPITAL LETTERS
+
+4.  Start the vim tutorial by editing the file you just made:
+    vim lab01Tutorial.txt
+
+5. Logout 
+   Close your shell window by typing: exit
+   (if you have more than one shell window open, close each one).
+   Logout of your windows session
+
+SUMMARY OF VIM COMMANDS:
+  /usr/courses/cps393/dwoit/courseNotes/vim-cheat-sheet.txt  
+  /usr/courses/cps393/dwoit/courseNotes/vimSummary.txt
+
+
+
+------------------------------------------
+Ways to access a moon shell window
+------------------------------------------
+    
+  a. use the putty client from a lab computer booted to windows (as above). 
+  b. reboot a lab computer (if necessary) and login to the linux local session. 
+     From there, get a session into a CS moon by:
+     ssh moon.scs.ryerson.ca  
+     Then login with your usual userid/password (if necessary)
+  c. You can login from your own windows machine by downloading and installing 
+     putty from  http://www.putty.org/ 
+  d. You can login from your own Mac machine by 
+     Open a terminal. 
+     Type: ssh userid@moon.cs.ryerson.ca
+     You might have to type "yes" to verify authenticity
+     Then login with your usual CS userid/password
+
+
+</pre>
